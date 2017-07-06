@@ -1,0 +1,55 @@
+<!doctype html>
+<html ng-app="storageManagerApp">
+    <head>
+        <title>Loal storage permissions manager</title>
+        <link rel="stylesheet" href="lib/bootstrap.min.css" />
+        <link rel="stylesheet" href="popup.css" />
+    </head>
+    <body>
+        <tabset>
+            <tab heading="Storage" ng-controller="storageController">
+                <button type="button" ng-click="submit()" class="btn btn-success btn-xs btn-block" style="width:100px">
+                    Save
+                </button>
+                <button type="button" ng-click="refresh()" class="btn btn-warning btn-xs btn-block" style="width:100px">
+                    Refresh
+                </button>
+                <label>Search: <input ng-model="searchText"></label>
+                <table class="table table-condensed table-bordered table-hover">
+                    <thead>
+                        <tr>
+                            <th width="70%">Field</th>
+                            <th width="30%">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(k, v) in permissions | with:searchText" class="something">
+                            <td class="key">
+                                <div class="inner">
+                                    <div class="content">{{k}}</div~
+                                </div>
+                            </td>
+                            <td class="value" ng-contenteditable strip-br="true">
+                                <input type="checkbox" ng-model="permissions[k]">                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <button type="button" ng-click="submit()" class="btn btn-success btn-xs btn-block" style="width:100px">
+                    Save
+                </button>
+                <button type="button" ng-click="refresh()" class="btn btn-warning btn-xs btn-block" style="width:100px">
+                    Refresh
+                </button>
+            </tab>
+        </tabset>
+
+        <script src="lib/angular.min.js"></script>
+        <script src="lib/angular-sanitize.min.js"></script>
+        <script src="lib/ui-bootstrap-tpls-0.11.2.min.js"></script>
+        <script src="Base64.js"></script>
+        <script src="popup.js"></script>
+    </body>
+</html>
+

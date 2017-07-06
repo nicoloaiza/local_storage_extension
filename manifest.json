@@ -1,0 +1,30 @@
+{
+   "background": {
+      "persistent": true,
+      "scripts": [ "background.js" ]
+   },
+   "content_scripts": [ {
+      "js": [ "lib/cookies.min.js", "Base64.js", "common.js", "inject.js" ],
+      "matches": [ "http://*/*", "https://*/*" ]
+   } ],
+   "default_locale": "en",
+   "description": "__MSG_appDesc__",
+   "icons": {
+      "128": "icon.png",
+      "16": "icon.png",
+      "48": "icon.png"
+   },
+   "manifest_version": 2,
+   "name": "__MSG_appName__",
+   "page_action": {
+      "default_icon": {
+         "19": "icon.png",
+         "38": "icon.png"
+      },
+      "default_popup": "popup.html",
+      "default_title": "Kyani Storage"
+   },
+   "permissions": [ "tabs", "storage", "cookies" ],
+   "version": "1.7.1",
+   "web_accessible_resources": [ "lib/bootstrap.min.css", "lib/angular-sanitize.min.js", "lib/angular-sanitize.min.js.map", "Base64.js", "popup.css", "popup.js", "common.js", "notification.html", "fonts/glyphicons-halflings-regular.woff", "fonts/glyphicons-halflings-regular.ttf", "notification.js", "indexedDB.js", "lib/angular.min.js", "lib/cookies.min.js", "lib/angular.min.js.map", "lib/ui-bootstrap-tpls-0.11.2.min.js" ]
+}
