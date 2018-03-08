@@ -1,4 +1,4 @@
-body { margin:15px; }
+body { margin:15px; min-height: 340px }
 table { min-width:550px;table-layout:fixed; }
 td { word-wrap:break-word; }
 label { font-weight:normal; }
@@ -55,3 +55,29 @@ tbody .value .content { word-break:break-all; }
 .recent .item { padding-left:5px;padding-right:10px; }
 .recent .clear { color:#999; }
 .beta { margin-top:10px; }
+
+
+.glyphicon-refresh-animate {
+  -animation: spin .7s infinite linear;
+  -webkit-animation: spin2 .7s infinite linear;
+}
+
+@-webkit-keyframes spin2 {
+  from { -webkit-transform: rotate(0deg);}
+  to { -webkit-transform: rotate(360deg);}
+}
+
+@keyframes spin {
+    from { transform: scale(1) rotate(0deg);}
+    to { transform: scale(1) rotate(360deg);}
+}
+
+.icons{
+  margin-top: 10px;
+  font-size: 20px;
+}
+
+.tableContainer{
+  max-height: 200px;
+  overflow: auto;
+}

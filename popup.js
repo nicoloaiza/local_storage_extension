@@ -10,6 +10,11 @@ var sendMessage = function(ev,cb,data){
                 local.setItem('kynect.accessReports',value);
                 sendResponse(dump());
                 break;
+            case 'saveSessionPermissions':
+                var value = Base64.encode( JSON.stringify(data) );
+                session.setItem('ngStorage-rep-allow',value);
+                sendResponse(dumpSession());
+                break;
             case 'pull':
                 cb(dump());
                 break;
@@ -133,17 +138,23 @@ extension.controller('storageController',function($scope){
     $scope.editing;
     $scope.editingType;
     $scope.percentage = 0;
+    $scope.saving = false;
+    $scope.refreshing = false;
 
-    var findPermissionsObject = function(array){
+    var findPermissionsObject = function(array, key){
         for (var i = 0; i < array.length; i++) {
-            if(array[i].key == 'kynect.accessReports')
+            if(array[i].key == key)
                 return array[i].value;
         }
         return null;
     };
 
     var setPermissions = function(data){
-        $scope.permissions = JSON.parse(findPermissionsObject(data));
+        $scope.permissions = JSON.parse(findPermissionsObject(data, 'kynect.accessReports'));
+    };
+
+    var setSessionPermissions = function(data){
+        $scope.sessionPermissions = JSON.parse(findPermissionsObject(data, 'ngStorage-rep-allow'));
     };
 
     $scope.add = function(){
@@ -183,17 +194,43 @@ extension.controller('storageController',function($scope){
         $scope.editingType = type;
     };
     $scope.submit = function(){
+        $scope.saving = true;
         sendMessage('savePermissions',function(data){
-
+            setTimeout(function(){ 
+                $scope.saving = false;
+                $scope.$apply();
+            }, 200);
         },$scope.permissions);
     };
+    $scope.submitSessionStorage = function(){
+        $scope.saving = true;
+        sendMessage('saveSessionPermissions',function(data){
+            setTimeout(function(){ 
+                $scope.saving = false;
+                $scope.$apply();
+            }, 200);
+        },$scope.sessionPermissions);
+    };    
     $scope.refresh = function(){
+        $scope.refreshing = true;
         sendMessage('pull',function(data){
             $scope.localStorage = data.storage;
             $scope.percentage = data.percentage;
             setPermissions($scope.localStorage);
-            $scope.$apply();
+            setTimeout(function(){ 
+                $scope.refreshing = false;
+                $scope.$apply();
+            }, 200);            
         });
+        sendMessage('pullSession',function(data){
+            $scope.sessionStorage = data.storage;
+            $scope.percentage = data.percentage;
+            setSessionPermissions($scope.sessionStorage);
+            setTimeout(function(){ 
+                $scope.refreshing = false;
+                $scope.$apply();
+            }, 200);   
+        });        
     };
     $scope.submitSession = function(key,value){
         $scope.editing = false;
@@ -231,10 +268,12 @@ extension.controller('storageController',function($scope){
         $scope.$apply();
 	});
 
-	sendMessage('pullSession',function(data){
-        $scope.sessionStorage = data;
+    sendMessage('pullSession',function(data){
+        $scope.sessionStorage = data.storage;
+        $scope.percentage = data.percentage;
+        setSessionPermissions($scope.sessionStorage);
         $scope.$apply();
-	});
+    });  
 
     if(window.chrome && window.chrome.runtime && window.chrome.runtime.onMessage){
         chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){

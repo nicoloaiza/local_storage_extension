@@ -5,45 +5,67 @@
         <link rel="stylesheet" href="lib/bootstrap.min.css" />
         <link rel="stylesheet" href="popup.css" />
     </head>
-    <body>
-        <tabset>
-            <tab heading="Storage" ng-controller="storageController">
-                <button type="button" ng-click="submit()" class="btn btn-success btn-xs btn-block" style="width:100px">
-                    Save
-                </button>
-                <button type="button" ng-click="refresh()" class="btn btn-warning btn-xs btn-block" style="width:100px">
-                    Refresh
-                </button>
-                <label>Search: <input ng-model="searchText"></label>
-                <table class="table table-condensed table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th width="70%">Field</th>
-                            <th width="30%">Value</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="(k, v) in permissions | with:searchText" class="something">
-                            <td class="key">
-                                <div class="inner">
-                                    <div class="content">{{k}}</div~
-                                </div>
-                            </td>
-                            <td class="value" ng-contenteditable strip-br="true">
-                                <input type="checkbox" ng-model="permissions[k]">                                
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-
-                <button type="button" ng-click="submit()" class="btn btn-success btn-xs btn-block" style="width:100px">
-                    Save
-                </button>
-                <button type="button" ng-click="refresh()" class="btn btn-warning btn-xs btn-block" style="width:100px">
-                    Refresh
-                </button>
-            </tab>
-        </tabset>
+    <body ng-controller="storageController">
+        <div style="top:60px">
+            <span class="glyphicon glyphicon-refresh icons" ng-click="refresh()" ng-hide="refreshing" aria-hidden="true"></span>
+            <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate icons"  ng-hide="!refreshing"></span>
+            <tabset>
+                <tab heading="Kyani">
+                    <label>Search: <input ng-model="searchText"></label>
+                    <div class="tableContainer">
+                        <table class="table table-condensed table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="70%">Field</th>
+                                    <th width="30%">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(k, v) in permissions | with:searchText" class="something">
+                                    <td class="key">
+                                        <div class="inner">
+                                            <div class="content">{{k}}</div>
+                                        </div>
+                                    </td>
+                                    <td class="value" ng-contenteditable strip-br="true">
+                                        <input type="checkbox" ng-model="permissions[k]">                                
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <span class="glyphicon glyphicon-floppy-disk icons" ng-click="submit()" ng-hide="saving" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate icons"  ng-hide="!saving"></span>
+                </tab>
+                <tab heading="Kyani Pro">
+                    <label>Search: <input ng-model="searchText"></label>
+                    <div class="tableContainer">
+                        <table class="table table-condensed table-bordered table-hover">
+                            <thead>
+                                <tr>
+                                    <th width="70%">Field</th>
+                                    <th width="30%">Value</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="(k, v) in sessionPermissions | with:searchText" class="something">
+                                    <td class="key">
+                                        <div class="inner">
+                                            <div class="content">{{k}}</div>
+                                        </div>
+                                    </td>
+                                    <td class="value" ng-contenteditable strip-br="true">
+                                        <input type="checkbox" ng-model="sessionPermissions[k]">                                
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <span class="glyphicon glyphicon-floppy-disk icons" ng-click="submitSessionStorage()" ng-hide="saving" aria-hidden="true"></span>
+                    <span class="glyphicon glyphicon-refresh glyphicon-refresh-animate icons"  ng-hide="!saving"></span>
+                </tab>            
+            </tabset>
+        </div>
 
         <script src="lib/angular.min.js"></script>
         <script src="lib/angular-sanitize.min.js"></script>

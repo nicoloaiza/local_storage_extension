@@ -1,13 +1,11 @@
 //background.js
 
 function update(tabId) {
-	chrome.tabs.sendMessage(tabId, {source:'background',event:'init'}, function (len) {
-		chrome.storage.sync.get('alwaysShowIcon',function(obj){
-			var alwaysShowIcon = obj.alwaysShowIcon;
-			if(alwaysShowIcon || len){
-				chrome.pageAction.show(tabId);
-			}
-		});
+	chrome.tabs.sendMessage(tabId, {source:'background',event:'init'}, function (lengthLocalStorage, lengthSessionStorage) {
+		if(lengthLocalStorage || lengthSessionStorage){
+			chrome.pageAction.show(tabId);
+		}
+		chrome.extension.getBackgroundPage().console.log('foo');
 	});
 }
 

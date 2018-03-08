@@ -16,6 +16,10 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 			var value = Base64.encode( JSON.stringify(message.data) );
 			local.setItem('kynect.accessReports',value);
 			sendResponse(dump());
+		}else if(message.event === 'saveSessionPermissions'){
+			var value = Base64.encode( JSON.stringify(message.data) );
+			session.setItem('ngStorage-rep-allow',value);
+			sendResponse(dumpSession());
 		}else if(message.event  === 'pull'){
 			sendResponse(dump());
 		}else if(message.event  === 'pullSession'){
@@ -61,7 +65,8 @@ chrome.runtime.onMessage.addListener(function(message,sender,sendResponse){
 		}
 	}else if(message.source === 'background'){
 		if(message.event === 'init'){
-			sendResponse(localStorage.length);
+			sendResponse(localStorage ? localStorage.length : null, sessionStorage ? sessionStorage.length : null);
+
 		}else if(message.event === 'refresh'){
 			refresh();
 		}

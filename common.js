@@ -39,27 +39,37 @@ var dump = function(){
 };
 
 var dumpSession = function(){
-    var result = [],
+    var len = 0,
+        limit = 2621440,
+        result = {
+            storage:[],
+            percentage:0
+        },
         key,value,obj;
 
 	for(var i=0,l=session.length;i<l;i++){
-		key = session.key(i);
-		value = session.getItem(key);
-        obj = {
-            key:key,
-            value:value,
-            isJson:false,
-            expand:false,
-            type:'session'
-        };
-        try{
-            JSON.parse(value);
-            if(!+value){
-                obj.isJson = true;
-            }
-        }catch(e){}
-        result.push(obj);
+        key = session.key(i);
+        if(key == 'ngStorage-rep-allow'){
+            value = session.getItem(key);
+            obj = {
+                key:key,
+                value: Base64.decode( '"' + value + '"' ),
+                isJson:false,
+                expand:false,
+                type:'session'
+            };
+            try{
+                JSON.parse(value);
+                if(!+value){
+                    obj.isJson = true;
+                }
+            }catch(e){}
+            result.storage.push(obj);
+            len += key.length;
+            len += value.length;
+        }
 	}
+    result.percentage = (len/limit*100).toFixed(2);
 	return result;
 };
 
